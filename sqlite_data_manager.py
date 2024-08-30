@@ -1,9 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, select, create
+#from SQLAlchemy import SQLAlchemy
+#from sqlalchemy-orm import sessionmaker
+#from sqlalchemy import create_engine, select, create
 from data_manager_interface import DataManagerInterface
 
 db = SQLAlchemy()
+print(db)
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -17,6 +18,7 @@ class Movie(db.Model):
     director = db.Column(db.String)
     year = db.Column(db.Integer)
     rating = db.Column(db.Float)
+    user_id = db.Column(db.Integer)
 
 class SQLiteDataManager(DataManagerInterface):
     def __init__(self, db_file_name):
@@ -36,7 +38,7 @@ class SQLiteDataManager(DataManagerInterface):
 
     def get_user_movies(self, user_id):
         session = self.Session()  # Erstelle eine neue Sitzung
-        stmt = select(Movie).join(UserMovie).where(UserMovie.user_id == user_id)  # Beispiel für JOIN und WHERE-Klausel
+        stmt = select(Movie).where(Movie.user_id == user_id)  # Beispiel für JOIN und WHERE-Klausel
         result = session.execute(stmt).scalars().all()  # Führe die Abfrage aus und erhalte alle Ergebnisse
         session.close()  # Schließe die Sitzung
         return result  # Gibt die Ergebnisse zurück

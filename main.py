@@ -1,6 +1,8 @@
 #from Flask import flask
+from datamanager.data_manager_interface import DataManagerInterface
 
-class Datamanger():
+
+class Datamanager:
     def __init__(self):
         self.users = {}
         self.movies = {}
@@ -55,5 +57,3 @@ class Datamanger():
         return self.movies.get(movie_id)
     
 
-
-('sqlite:///data/users_movies.sqlite')

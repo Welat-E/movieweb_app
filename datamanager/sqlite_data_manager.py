@@ -1,7 +1,9 @@
+from typing import cast
+
 from flask_sqlalchemy import SQLAlchemy  # Wenn du Flask verwendest, ansonsten direkt von sqlalchemy importieren.
 from sqlalchemy.orm import sessionmaker  # ORM-Funktionen aus dem richtigen Modul importieren
 from sqlalchemy import create_engine, select  # Entferne `create`, das gibt es nicht als separates Modul.
-from data_manager_interface import DataManagerInterface
+from datamanager.data_manager_interface import DataManagerInterface
 
 db = SQLAlchemy()
 print(db)
@@ -38,7 +40,7 @@ class SQLiteDataManager(DataManagerInterface):
 
     def get_user_movies(self, user_id):
         session = self.Session()  # Erstelle eine neue Sitzung
-        stmt = select(Movie).where(Movie.user_id == user_id)  # Beispiel für JOIN und WHERE-Klausel
+        stmt = select(Movie).where(cast("ColumnElement[bool]",Movie.user_id == user_id))  # Beispiel für JOIN und WHERE-Klausel
         result = session.execute(stmt).scalars().all()  # Führe die Abfrage aus und erhalte alle Ergebnisse
         session.close()  # Schließe die Sitzung
         return result  # Gibt die Ergebnisse zurück
@@ -92,7 +94,3 @@ class SQLiteDataManager(DataManagerInterface):
             
         session.close()
 
-
-
-sql_lite_instance = SQLiteDataManager('users_movies.sqlite') #this has to stay here so its get activated
-sql_lite_instance.update_movie("Batman")

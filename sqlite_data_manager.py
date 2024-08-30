@@ -1,6 +1,6 @@
-#from SQLAlchemy import SQLAlchemy
-#from sqlalchemy-orm import sessionmaker
-#from sqlalchemy import create_engine, select, create
+from flask_sqlalchemy import SQLAlchemy  # Wenn du Flask verwendest, ansonsten direkt von sqlalchemy importieren.
+from sqlalchemy.orm import sessionmaker  # ORM-Funktionen aus dem richtigen Modul importieren
+from sqlalchemy import create_engine, select  # Entferne `create`, das gibt es nicht als separates Modul.
 from data_manager_interface import DataManagerInterface
 
 db = SQLAlchemy()
@@ -80,6 +80,19 @@ class SQLiteDataManager(DataManagerInterface):
         
         session.close()
 
+    def delete_movie(self, movie_id):
+        session = self.Session()
+        movie = session.query(Movie).filter(Movie.id == movie_id).first
 
-sql_lite_instance = SQLiteDataManager('users_movies.sqlite')
+        if movie:
+            session.delete(movie)
+            session.commit()
+        else:
+            print("Movie not found.")   
+            
+        session.close()
+
+
+
+sql_lite_instance = SQLiteDataManager('users_movies.sqlite') #this has to stay here so its get activated
 sql_lite_instance.update_movie("Batman")

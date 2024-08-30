@@ -45,4 +45,15 @@ class Datamanger():
             print("Movie not found.")
 
 
+    def get_user(self, user_id):
+        """Gives informations about a user."""
+        return self.users.get(user_id)
     
+
+    def get_moives(self, movie_id):
+        """Gives informations about a movie."""
+        return self.movies.get(movie_id)
+    
+
+
+('sqlite:///data/users_movies.sqlite')

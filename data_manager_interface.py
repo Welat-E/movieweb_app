@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 import json
 
 
-class DataManagerInterface(ABC):
+class DataManagerInterface(ABC): #declare what methods what the classes have 
 
-    @abstractmethod
+    @abstractmethod  #Its absrtracts functions / methods from other classes
     def get_all_users(self):
         pass
 
@@ -38,4 +38,3 @@ class JSONDataManager(DataManagerInterface):
             self.users = data.get('users', {})
             self.movies = data.get('movies', {})
 
-#

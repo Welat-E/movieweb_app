@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Movie</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 <body>
-    <h1>Add a New Movie</h1>
-    <form action="" method="POST">
-        <label for="name">Movie Name:</label>
-        <input type="text" id="name" name="name" required>
-        <button type="submit">Add Movie</button>
-    </form>
-    <a href="{{ url_for('home') }}">Back to Home</a>
+    <header>
+        <h1>Add a New Movie</h1>
+    </header>
+    <main>
+        <form action="" method="POST">
+            <label for="name">Movie Name:</label>
+            <input type="text" id="name" name="name" required>
+            <button class="button" type="submit">Add Movie</button>
+        </form>
+        <a class="button" href="{{ url_for('home') }}">Back to Home</a>
+    </main>
 </body>
 </html>

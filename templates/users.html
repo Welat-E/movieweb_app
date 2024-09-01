@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users - MovieWeb App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 <body>
-    <h1>Users</h1>
-    <ul>
-        {% for user in users %}
-            <li>
-                <a href="{{ url_for('get_user_movies', user_id=user.id) }}">{{ user.name }}</a>
-            </li>
-        {% else %}
-            <li>No users found.</li>
-        {% endfor %}
-    </ul>
+    <header>
+        <h1>Users</h1>
+    </header>
+    <main>
+        <ul>
+            {% for user in users %}
+                <li>
+                    <a class="button" href="{{ url_for('get_user_movies', user_id=user.id) }}">{{ user.name }}</a>
+                </li>
+            {% else %}
+                <li>No users found.</li>
+            {% endfor %}
+        </ul>
+    </main>
 </body>
 </html>

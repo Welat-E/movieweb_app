@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Movies</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 <body>
     <header>
@@ -29,16 +30,16 @@
                     <td>{{ movie.year }}</td>
                     <td>{{ movie.rating }}</td>
                     <td>
-                        <a href="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}">Edit</a> |
+                        <a class="button" href="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}">Edit</a> |
                         <form action="{{ url_for('delete_movie', user_id=user_id, movie_id=movie.id) }}" method="POST" style="display:inline;">
-                            <button type="submit">Delete</button>
+                            <button class="button" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{{ url_for('add_movie', user_id=user_id) }}">Add New Movie</a>
+        <a class="button" href="{{ url_for('add_movie', user_id=user_id) }}">Add New Movie</a>
     </main>
     <footer>
         <p>&copy; 2024 Movie App</p>

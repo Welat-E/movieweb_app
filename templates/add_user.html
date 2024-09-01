@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 <body>
-    <h1>Add New User</h1>
-    <form action="{{ url_for('add_user') }}" method="post">
-        <label for="user_id">User ID:</label>
-        <input type="text" id="user_id" name="user_id" required><br><br>
+    <header>
+        <h1>Add New User</h1>
+    </header>
+    <main>
+        <form action="{{ url_for('add_user') }}" method="post">
+            <label for="user_id">User ID:</label>
+            <input type="text" id="user_id" name="user_id" required><br><br>
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
 
-        <input type="submit" value="Add User">
-    </form>
+            <input class="button" type="submit" value="Add User">
+        </form>
+    </main>
 </body>
 </html>

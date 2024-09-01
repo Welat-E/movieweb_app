@@ -1,3 +1,5 @@
+from crypt import methods
+
 from flask import Flask, request, render_template, url_for, redirect
 from datamanager.sqlite_data_manager import SQLiteDataManager, User, db, Movie
 
@@ -47,6 +49,19 @@ def add_movie():
         db.session.commit()
         return redirect('home')
     return render_template('/users/<user_id>/add_movie')
+
+
+@app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['GET', 'POST'])
+def update_movie(user_id, movie_id):
+    movie = Movie.query.get_or_404(movie_id)  # Hole den Film oder zeige 404, falls nicht gefunden
+
+    if request.method == 'POST':
+        new_title = request.form['name']
+        movie.name = new_title  # Setze den neuen Titel
+        db.session.commit()  # Speichere die Änderungen
+        return redirect(url_for('get_user_movies', user_id=user_id))  # Weiterleitung zur Benutzer-Film-Liste
+
+    return render_template('update_movie.html', user_id=user_id, movie=movie)
 
 
 if __name__ == '__main__':

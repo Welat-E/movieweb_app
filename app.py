@@ -73,7 +73,7 @@ def delete_movie(user_id, movie_id):
 
 @app.route('/users')
 def list_users():
-    users = data_manager.list_all_users()
+    users = data_manager.get_all_users()
     return render_template('users.html', users=users)
 
 

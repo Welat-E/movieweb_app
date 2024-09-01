@@ -56,6 +56,8 @@ class SQLiteDataManager(DataManagerInterface):
         session.commit()
         session.close()
 
+
+
     def update_movie(self, movie_id, name=None, director=None, year=None, rating=None):
         session = self.Session()
         movie = session.query(Movie).filter(Movie.id == movie_id).one_or_none()

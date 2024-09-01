@@ -1,5 +1,4 @@
-from crypt import methods
-
+#from crypt import methods
 from flask import Flask, request, render_template, url_for, redirect
 from datamanager.sqlite_data_manager import SQLiteDataManager, User, db, Movie
 
@@ -22,12 +21,12 @@ def home():
 @app.route('/users', methods=['GET'])
 def list_users():
     users = data_manager.get_all_users()
-    return str(users)  # Convert the list to a string for a basic response
+    return str(users)  #convert the list to a string for a better resp.
 
 @app.route('/users/<int:user_id>')
 def get_user_movies(user_id):
     movies = data_manager.get_user_movies(user_id)
-    return str(movies)  # Convert the list to a string for a basic response
+    return str(movies)
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
@@ -72,6 +71,10 @@ def delete_movie(user_id, movie_id):
 
     return redirect(url_for('get_user_movies', user_id=user_id))
 
+@app.route('/users')
+def list_users():
+    users = data_manager.list_all_users()
+    return render_template('users.html', users=users)
 
 
 if __name__ == '__main__':

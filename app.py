@@ -4,7 +4,7 @@ from datamanager.sqlite_data_manager import SQLiteDataManager, User, db, Movie
 app = Flask(__name__)
 
 # Initialisiere SQLAlchemy mit der Flask-App
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/users_movies.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/rojha/Desktop/Welat/movieweb_app/data/users_movies.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 

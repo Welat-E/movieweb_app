@@ -6,13 +6,13 @@ from datamanager.sqlite_data_manager import SQLiteDataManager, User, db, Movie
 
 app = Flask(__name__)
 
-# Initialisiere SQLAlchemy mit der Flask-App
+# initialise SQLAlchemy with Flask-App
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/users_movies.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
-# Initialisiere den Datenbankmanager
+# initialise the data_manager
 data_manager = SQLiteDataManager("data/users_movies.sqlite")
 
 @app.route('/')
@@ -53,15 +53,25 @@ def add_movie():
 
 @app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['GET', 'POST'])
 def update_movie(user_id, movie_id):
-    movie = Movie.query.get_or_404(movie_id)  # Hole den Film oder zeige 404, falls nicht gefunden
+    movie = Movie.query.get_or_404(movie_id)
 
     if request.method == 'POST':
         new_title = request.form['name']
-        movie.name = new_title  # Setze den neuen Titel
-        db.session.commit()  # Speichere die Änderungen
-        return redirect(url_for('get_user_movies', user_id=user_id))  # Weiterleitung zur Benutzer-Film-Liste
+        movie.name = new_title  # add the new title
+        db.session.commit()  #save
+        return redirect(url_for('get_user_movies', user_id=user_id))
 
     return render_template('update_movie.html', user_id=user_id, movie=movie)
+
+@app.route('/users/<int:user_id>/delete_movie/<int:movie_id>', methods=['POST'])
+def delete_movie(user_id, movie_id):
+    movie = Movie.query.get_or_404(movie_id)  #get the movie or a 404
+
+    db.session.delete(movie)
+    db.session.commit()
+
+    return redirect(url_for('get_user_movies', user_id=user_id))
+
 
 
 if __name__ == '__main__':

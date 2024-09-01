@@ -4,24 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Movie</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <h1>Update Movie</h1>
-    <form action="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}" method="POST">
-        <label for="name">Movie Title:</label>
-        <input type="text" id="name" name="name" value="{{ movie.name }}" required><br><br>
+<body class="update-movie-page">
+    <header>
+        <h1>Update Movie</h1>
+    </header>
+    <main>
+        <form action="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}" method="POST">
+            <label for="name">Movie Title:</label>
+            <input type="text" id="name" name="name" value="{{ movie.name }}" required><br><br>
 
-        <label for="director">Director:</label>
-        <input type="text" id="director" name="director" value="{{ movie.director }}"><br><br>
+            <label for="director">Director:</label>
+            <input type="text" id="director" name="director" value="{{ movie.director }}"><br><br>
 
-        <label for="year">Year:</label>
-        <input type="text" id="year" name="year" value="{{ movie.year }}"><br><br>
+            <label for="year">Year:</label>
+            <input type="text" id="year" name="year" value="{{ movie.year }}"><br><br>
 
-        <label for="rating">Rating:</label>
-        <input type="text" id="rating" name="rating" value="{{ movie.rating }}"><br><br>
+            <label for="rating">Rating:</label>
+            <input type="text" id="rating" name="rating" value="{{ movie.rating }}"><br><br>
 
-        <input type="submit" value="Update Movie">
-    </form>
-    <a href="{{ url_for('get_user_movies', user_id=user_id) }}">Back to User Movies</a>
+            <input type="submit" value="Update Movie" class="button">
+        </form>
+        <a href="{{ url_for('get_user_movies', user_id=user_id) }}" class="button">Back to User Movies</a>
+    </main>
+    <footer>
+        <p>&copy; 2024 Movie App</p>
+    </footer>
 </body>
 </html>

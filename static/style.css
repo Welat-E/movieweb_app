@@ -1,32 +1,45 @@
 body {
     font-family: 'Roboto', sans-serif;
     color: #333;
-    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    background-image: url('https://cdn.prod.website-files.com/6171f1dd89124f43db13392f/622d696097073a255ea91f10_ma-cover.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
 }
 
 header {
-    background-color: #4CAF50;
+    background-color: #42164b;
     color: white;
-    padding: 1rem;
+    padding: 2rem;
     text-align: center;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 1rem;
+header h1 {
+    font-size: 3rem;
+    font-weight: 700; /* Makes the text bold */
 }
 
 main {
     padding: 2rem;
     max-width: 800px;
     margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+    text-align: center; /* Centers text in the main section */
+}
+
+.intro-text {
+    font-size: 1.5rem;
+    font-weight: 400; /* Regular text weight */
+    margin: 1rem 0;
 }
 
 button, .button {
-    background-color: #4CAF50;
+    background-color: #42164b;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -40,34 +53,16 @@ button, .button {
 }
 
 button:hover, .button:hover {
-    background-color: #45a049;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 0.5rem;
-    text-align: left;
-}
-
-th {
-    background-color: #f2f2f2;
+    background-color: #3a0e44;
 }
 
 footer {
-    background-color: #4CAF50;
+    background-color: #42164b;
     color: white;
     text-align: center;
     padding: 1rem;
     position: fixed;
     width: 100%;
     bottom: 0;
+    z-index: 1;
 }

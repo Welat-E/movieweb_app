@@ -2,14 +2,16 @@
 from flask import Flask, request, render_template, url_for, redirect, jsonify, abort
 from datamanager.sqlite_data_manager import SQLiteDataManager, User, db, Movie
 import requests
-import creds
+import os 
+from dotenv import python_dotenv
 
 app = Flask(__name__)
+load_dotenv()
+API_KEY = os.environ.get("API_KEY")
 
 # Configure the app with SQLite database
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "sqlite:///C:/Users/rojha/Desktop/Welat/movieweb_app/data/users_movies.sqlite"
-)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/users_movies.sqlite"
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
@@ -114,7 +116,7 @@ def add_movie(user_id):
 
     if request.method == "POST":
         title = request.form["name"]
-        params = {"apikey": creds.API_KEY, "t": title}
+        params = {"apikey": API_KEY, "t": title}
         try:
             response = requests.get(API_URL, params=params)
 

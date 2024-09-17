@@ -1,4 +1,3 @@
-
 # SQLAlchemy model and data manager for SQLite database interactions
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import sessionmaker
@@ -13,7 +12,8 @@ class User(db.Model):
     """
     Represents a user in the database.
     """
-    __tablename__ = 'users'
+
+    __tablename__ = "users"
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String)
 
@@ -23,7 +23,8 @@ class Movie(db.Model):
     """
     Represents a movie in the database.
     """
-    __tablename__ = 'movies'
+
+    __tablename__ = "movies"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     director = db.Column(db.String)
@@ -35,7 +36,7 @@ class Movie(db.Model):
 # SQLite-based data manager that implements DataManagerInterface
 class SQLiteDataManager(DataManagerInterface):
     """
-    A data manager class that handles SQLite database interactions 
+    A data manager class that handles SQLite database interactions
     for users and movies.
     """
 
@@ -46,10 +47,9 @@ class SQLiteDataManager(DataManagerInterface):
         Args:
             db_file_name (str): The name of the SQLite database file.
         """
-        self.engine = create_engine(f'sqlite:///{db_file_name}')
+        self.engine = create_engine(f"sqlite:///{db_file_name}")
         self.Session = sessionmaker(bind=self.engine)
         db.metadata.create_all(self.engine)
-
 
     # Retrieves all users from the database
     def get_all_users(self):
@@ -64,7 +64,6 @@ class SQLiteDataManager(DataManagerInterface):
         result = session.execute(stmt).scalars().all()
         session.close()
         return result
-
 
     # Retrieves all movies for a given user from the database
     def get_user_movies(self, user_id):
@@ -82,7 +81,6 @@ class SQLiteDataManager(DataManagerInterface):
         result = session.execute(stmt).scalars().all()
         session.close()
         return result
-
 
     # Adds a new user to the database
     def add_user(self, user_id, name):
@@ -102,7 +100,6 @@ class SQLiteDataManager(DataManagerInterface):
         session.commit()
         session.close()
 
-
     # Adds a new movie to the database
     def add_movie(self, movie_id, name):
         """
@@ -120,7 +117,6 @@ class SQLiteDataManager(DataManagerInterface):
         session.add(new_movie)
         session.commit()
         session.close()
-
 
     # Updates details of a movie in the database
     def update_movie(self, movie_id, name=None, director=None, year=None, rating=None):
@@ -155,7 +151,6 @@ class SQLiteDataManager(DataManagerInterface):
             print("Movie not found.")
 
         session.close()
-
 
     # Deletes a movie from the database
     def delete_movie(self, movie_id):

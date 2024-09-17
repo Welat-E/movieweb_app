@@ -1,4 +1,3 @@
-
 # Abstract base class defining data manager methods
 from abc import ABC, abstractmethod
 import json
@@ -21,7 +20,6 @@ class DataManagerInterface(ABC):
             list: A list of user details.
         """
         pass
-
 
     @abstractmethod
     def get_user_movies(self, user_id):
@@ -51,7 +49,6 @@ class JSONDataManager(DataManagerInterface):
         self.users = {}
         self.movies = {}
 
-
     # Retrieves all users from the system
     def get_all_users(self):
         """
@@ -61,7 +58,6 @@ class JSONDataManager(DataManagerInterface):
             list: A list of all users stored in the system.
         """
         return list(self.users.values())
-
 
     # Retrieves all movies for a given user
     def get_user_movies(self, user_id):
@@ -76,7 +72,6 @@ class JSONDataManager(DataManagerInterface):
         """
         return self.movies.get(user_id, [])
 
-
     # Saves users and movies data to a JSON file
     def save_to_json(self, file_path):
         """
@@ -88,13 +83,9 @@ class JSONDataManager(DataManagerInterface):
         Returns:
             None
         """
-        data = {
-            'users': self.users,
-            'movies': self.movies
-        }
-        with open(file_path, 'w') as f:
+        data = {"users": self.users, "movies": self.movies}
+        with open(file_path, "w") as f:
             json.dump(data, f)
-
 
     # Loads users and movies data from a JSON file
     def load_from_json(self, file_path):
@@ -107,7 +98,7 @@ class JSONDataManager(DataManagerInterface):
         Returns:
             None
         """
-        with open(file_path, 'r') as f:
+        with open(file_path, "r") as f:
             data = json.load(f)
-            self.users = data.get('users', {})
-            self.movies = data.get('movies', {})
+            self.users = data.get("users", {})
+            self.movies = data.get("movies", {})

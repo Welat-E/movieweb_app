@@ -2,15 +2,16 @@
 from flask import Flask, request, render_template, url_for, redirect, jsonify, abort
 from datamanager.sqlite_data_manager import SQLiteDataManager, User, db, Movie
 import requests
-import os 
-from dotenv import python_dotenv
+import os
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 load_dotenv()
 API_KEY = os.environ.get("API_KEY")
 
 # Configure the app with SQLite database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/users_movies.sqlite"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///MOVIEWEB_APP/data/users_movies.sqlite"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
@@ -119,7 +120,7 @@ def add_movie(user_id):
         params = {"apikey": API_KEY, "t": title}
         try:
             response = requests.get(API_URL, params=params)
-
+            print(response)
             if response.status_code == 200:
                 movie_data = response.json()
                 if movie_data.get("Response") == "True":
@@ -150,6 +151,7 @@ def add_movie(user_id):
                     "add_movie.html", user_id=user_id, error=error_message
                 )
         except Exception as e:
+            print(e)
             return render_template("500.html"), 500
 
     return render_template("add_movie.html", user_id=user_id)

@@ -156,7 +156,7 @@ def add_movie(user_id):
                     "add_movie.html", user_id=user_id, error=error_message
                 )
         except Exception as e:
-<            return render_template("500.html"), 500
+            return render_template("500.html"), 500
 
     return render_template("add_movie.html", user_id=user_id)
 

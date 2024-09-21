@@ -18,7 +18,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
     "sqlite:////Users/welat/Desktop/movieweb_app/data/users_movies.sqlite"
 )
 
-X
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
@@ -124,41 +124,39 @@ def add_movie(user_id):
     if request.method == "POST":
         title = request.form["name"]
         params = {"apikey": API_KEY, "t": title}
-        # try:
-        response = requests.get(API_URL, params=params)
-        print(response)
-        if response.status_code == 200:
-            movie_data = response.json()
-            if movie_data.get("Response") == "True":
-                name = movie_data.get("Title")
-                director = movie_data.get("Director")
-                year = movie_data.get("Year")
-                rating = movie_data.get("imdbRating")
+        try:
+            response = requests.get(API_URL, params=params)
+            if response.status_code == 200:
+                movie_data = response.json()
+                if movie_data.get("Response") == "True":
+                    name = movie_data.get("Title")
+                    director = movie_data.get("Director")
+                    year = movie_data.get("Year")
+                    rating = movie_data.get("imdbRating")
 
-                movie = Movie(
-                    name=name,
-                    director=director,
-                    year=int(year) if year.isdigit() else None,
-                    rating=float(rating) if rating else None,
-                    user_id=user_id,
-                )
-                db.session.add(movie)
-                db.session.commit()
+                    movie = Movie(
+                        name=name,
+                        director=director,
+                        year=int(year) if year.isdigit() else None,
+                        rating=float(rating) if rating else None,
+                        user_id=user_id,
+                    )
+                    db.session.add(movie)
+                    db.session.commit()
 
-                return redirect(url_for("get_user_movies", user_id=user_id))
+                    return redirect(url_for("get_user_movies", user_id=user_id))
+                else:
+                    error_message = "Movie not found. Please try again."
+                    return render_template(
+                        "add_movie.html", user_id=user_id, error=error_message
+                    )
             else:
-                error_message = "Movie not found. Please try again."
+                error_message = "Error with the request. Please try again later."
                 return render_template(
                     "add_movie.html", user_id=user_id, error=error_message
                 )
-        else:
-            error_message = "Error with the request. Please try again later."
-            return render_template(
-                "add_movie.html", user_id=user_id, error=error_message
-            )
-        """except Exception as e:
-            print(e)
-            return render_template("500.html"), 500"""
+        except Exception as e:
+<            return render_template("500.html"), 500
 
     return render_template("add_movie.html", user_id=user_id)
 

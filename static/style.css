@@ -12,9 +12,11 @@ body {
 header {
     background-color: #42164b;
     color: white;
+    font-family: 'Brush Script MT', cursive;
     padding: 0.25rem; 
     text-align: center;
 }
+
 
 header h1 {
     font-size: 3rem;

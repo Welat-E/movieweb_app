@@ -10,14 +10,12 @@ body {
 }
 
 header {
-    background-color: rgba(66, 22, 75, 0.5); /* 0.5 für 50% Transparenz */
+    background-color: rgba(66, 22, 75, 0.2); /* 0.5 für 50% Transparenz */
     color: white;
     font-family: 'Brush Script MT', cursive;
     padding: 0.25rem; 
     text-align: center;
 }
-
-
 
 header h1 {
     font-size: 3rem;
@@ -60,7 +58,7 @@ button:hover, .button:hover {
 }
 
 footer {
-    background-color: #42164b;
+    background-color: rgba(66, 22, 75, 0.2);
     color: white;
     text-align: center;
     padding: 0.5rem;

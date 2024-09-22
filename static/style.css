@@ -10,12 +10,13 @@ body {
 }
 
 header {
-    background-color: #42164b;
+    background-color: rgba(66, 22, 75, 0.5); /* 0.5 für 50% Transparenz */
     color: white;
     font-family: 'Brush Script MT', cursive;
     padding: 0.25rem; 
     text-align: center;
 }
+
 
 
 header h1 {

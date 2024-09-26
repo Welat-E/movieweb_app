@@ -3,23 +3,20 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-    background-image: url('https://cdn.prod.website-files.com/6171f1dd89124f43db13392f/622d696097073a255ea91f10_ma-cover.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
+    background: url('https://cdn.prod.website-files.com/6171f1dd89124f43db13392f/622d696097073a255ea91f10_ma-cover.jpg') center center / cover fixed;
 }
 
 header {
-    background-color: rgba(66, 22, 75, 0.2); /* 0.5 für 50% Transparenz */
+    background-color: rgba(66, 22, 75, 0.2);
     color: white;
     font-family: 'Brush Script MT', cursive;
-    padding: 0.25rem; 
+    padding: 0.25rem;
     text-align: center;
 }
 
 header h1 {
     font-size: 3rem;
-    font-weight: 700; /* Makes the text bold */
+    font-weight: 700;
 }
 
 main {
@@ -28,15 +25,29 @@ main {
     margin: 0 auto;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 8px;
-    position: relative;
     z-index: 1;
-    text-align: center; /* Centers text in the main section */
+    text-align: center;
 }
 
 .intro-text {
     font-size: 1.5rem;
-    font-weight: 400; /* Regular text weight */
     margin: 1rem 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.inline-form {
+    display: inline;
 }
 
 button, .button {
@@ -44,9 +55,7 @@ button, .button {
     color: white;
     border: none;
     padding: 0.5rem 1rem;
-    text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 1rem;
     margin: 0.5rem 0;
     cursor: pointer;
@@ -57,6 +66,16 @@ button:hover, .button:hover {
     background-color: #3a0e44;
 }
 
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.icon-button i {
+    color: red;
+}
+
 footer {
     background-color: rgba(66, 22, 75, 0.2);
     color: white;
@@ -65,5 +84,4 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
-    z-index: 1;
 }

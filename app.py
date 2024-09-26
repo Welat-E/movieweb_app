@@ -37,7 +37,8 @@ def home():
     Returns:
         A rendered HTML template for the home page.
     """
-    return render_template("home.html")
+    users = User.query.all()
+    return render_template("home.html", users=users)
 
 
 # List users
@@ -221,6 +222,19 @@ def delete_movie(user_id, movie_id):
         return redirect(url_for("get_user_movies", user_id=user_id))
     except Exception as e:
         return render_template("500.html"), 500
+
+
+@app.route('/delete_user/<int:user_id>', methods=['POST'])
+def delete_user(user_id):
+    user = User.query.get(user_id)  # User anhand der ID finden
+    if user:
+        db.session.delete(user)  # Benutzer löschen
+        db.session.commit()  # Änderungen speichern
+        flash(f'User {user.name} has been deleted.', 'success')
+    else:
+        flash('User not found.', 'error')
+    return redirect(url_for('home'))  # Zurück zur Homepage
+
 
 
 # Handle 404 errors

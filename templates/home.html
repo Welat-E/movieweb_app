@@ -8,19 +8,79 @@
     <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap"
-      rel="stylesheet"
     />
+    <!-- Font Awesome für das Mülleimer-Symbol -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* Benutzerliste immer links positionieren */
+      .user-list {
+        position: fixed;
+        top: 150px; /* Abstand von oben */
+        left: 0;
+        width: 200px;
+        padding-right: 20px;
+      }
+      .main-content {
+        margin-left: 220px; /* Abstand nach links, damit die Inhalte nicht überlappen */
+      }
+
+      /* Stil für den Delete-Button (Mülleimer) */
+      .delete-btn {
+        color: rgb(78, 78, 78);
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .delete-btn:hover {
+        color: darkred;
+      }
+
+      /* Styling für die Button-Icons */
+      .user-item {
+        display: flex;
+        align-items: center;
+      }
+    </style>
   </head>
   <body>
     <header>
       <h1>Welcome to MovieWeb App!</h1>
     </header>
-    <main>
-      <p class="intro-text">This is the Homepage of the MovieWeb App.</p>
-      <a href="/users/1/add_movie" class="button">Add a New Movie</a>
-      <a href="/add_user" class="button">Add a New User</a>
+
+    <!-- Hauptinhalt -->
+    <main class="main-content">
+      <section>
+        <p class="intro-text">This is the Homepage of the MovieWeb App.</p>
+        <a href="/add_user" class="button">Add a New User</a>
+      </section>
     </main>
-    <footer>
+
+    <!-- Benutzerliste (links, fixiert) -->
+    <aside class="user-list">
+      <h2>Users</h2>
+      <ul>
+        {% for user in users %}
+        <li class="user-item">
+          <a class="button" href="{{ url_for('get_user_movies', user_id=user.id) }}">{{ user.name }}</a>
+          <!-- Delete-Button mit Mülleimer-Icon -->
+          <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="delete-btn">
+              <i class="fas fa-trash"></i> <!-- Font Awesome Mülleimer-Icon -->
+            </button>
+          </form>
+        </li>
+        {% else %}
+        <li>No users found.</li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <footer class="main-content">
       <p>&copy; 2024 Movie App</p>
     </footer>
   </body>

@@ -15,17 +15,12 @@ API_KEY = os.environ.get("API_KEY")
 # Configure the app with SQLite database
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "sqlite:////Users/welat/Desktop/movieweb_app/data/users_movies.sqlite"
-)
-
+    "sqlite:////Users/welat/Desktop/movieweb_app/data/users_movies.sqlite")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
-
-# Initialize data manager
 data_manager = SQLiteDataManager("data/users_movies.sqlite")
 
 
-# Home route
 @app.route("/")
 def home():
     """
@@ -76,6 +71,7 @@ def get_user_movies(user_id):
         movies = data_manager.get_user_movies(user_id)
         return render_template("user_movies.html", user_id=user_id, movies=movies)
     except Exception as e:
+        print(e)
         return render_template("500.html"), 500
 
 
@@ -133,13 +129,15 @@ def add_movie(user_id):
                     director = movie_data.get("Director")
                     year = movie_data.get("Year")
                     rating = movie_data.get("imdbRating")
-
+                    cover_image = movie_data.get("Poster")
+                    print(cover_image)
                     movie = Movie(
                         name=name,
                         director=director,
                         year=int(year) if year.isdigit() else None,
                         rating=float(rating) if rating else None,
                         user_id=user_id,
+                        cover_image=cover_image,
                     )
                     db.session.add(movie)
                     db.session.commit()
@@ -156,6 +154,7 @@ def add_movie(user_id):
                     "add_movie.html", user_id=user_id, error=error_message
                 )
         except Exception as e:
+            print(e)
             return render_template("500.html"), 500
 
     return render_template("add_movie.html", user_id=user_id)

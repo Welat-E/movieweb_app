@@ -12,6 +12,12 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
     />
+    <style>
+      .image-cell img {
+        max-width: 100px;
+        height: auto;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -25,7 +31,10 @@
             <th>Director</th>
             <th>Year</th>
             <th>Rating</th>
+            <th>Cover Image</th>
+            <!-- Neue Spalte für das Bild -->
             <th>Actions</th>
+            <!-- Spalte für die Buttons -->
           </tr>
         </thead>
         <tbody>
@@ -35,6 +44,13 @@
             <td>{{ movie.director }}</td>
             <td>{{ movie.year }}</td>
             <td>{{ movie.rating }}</td>
+            <td class="image-cell">
+              <!-- Bild anzeigen -->
+              <img
+                src="{{ movie.cover_image }}"
+                alt="{{ movie.name }} Cover"
+              />
+            </td>
             <td>
               <a
                 class="button"

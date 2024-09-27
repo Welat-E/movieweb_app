@@ -31,6 +31,7 @@ class Movie(db.Model):
     year = db.Column(db.Integer)
     rating = db.Column(db.Float)
     user_id = db.Column(db.Integer)
+    cover_image =  db.Column(db.String)
 
 
 # SQLite-based data manager that implements DataManagerInterface

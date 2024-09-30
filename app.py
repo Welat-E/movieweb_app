@@ -1,5 +1,14 @@
 # Import necessary modules and initialize the Flask app
-from flask import Flask, flash, request, render_template, url_for, redirect, jsonify, abort
+from flask import (
+    Flask,
+    flash,
+    request,
+    render_template,
+    url_for,
+    redirect,
+    jsonify,
+    abort,
+)
 from datamanager.sqlite_data_manager import SQLiteDataManager, User, db, Movie
 import requests
 import os
@@ -8,19 +17,23 @@ from dotenv import load_dotenv
 
 
 app = Flask(__name__)
-app.secret_key = '1223901'
+app.secret_key = "1223901"
 load_dotenv()
 API_KEY = os.environ.get("API_KEY")
 
+
 # Configure the app with SQLite database
 
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "sqlite:////Users/welat/Desktop/movieweb_app/data/users_movies.sqlite")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users_movies.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 data_manager = SQLiteDataManager("data/users_movies.sqlite")
 
 
+"""@app.before_first_request
+def create_tables():
+    db.create_all()
+"""
 @app.route("/")
 def home():
     """
@@ -222,18 +235,17 @@ def delete_movie(user_id, movie_id):
         return render_template("500.html"), 500
 
 
-@app.route('/delete_user/<string:user_id>', methods=['POST'])
+@app.route("/delete_user/<string:user_id>", methods=["POST"])
 def delete_user(user_id):
     user = User.query.get(user_id)
-    
-    if user:  #check if user exists
+
+    if user:  # check if user exists
         db.session.delete(user)
         db.session.commit()
     else:
         return "User not found", 404
 
-    return redirect(url_for('home'))
-
+    return redirect(url_for("home"))
 
 
 # Handle 404 errors
@@ -263,3 +275,9 @@ def internal_server_error(e):
 # Run the Flask app
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+"""if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)"""

@@ -1,13 +1,9 @@
-# SQLAlchemy model and data manager for SQLite database interactions
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, select
-from datamanager.data_manager_interface import DataManagerInterface
 
+# Initialize the db instance from Flask-SQLAlchemy
 db = SQLAlchemy()
 
 
-# Define the User model for the database
 class User(db.Model):
     """
     Represents a user in the database.
@@ -17,8 +13,10 @@ class User(db.Model):
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String)
 
+    def __repr__(self):
+        return f"<User {self.name}>"
 
-# Define the Movie model for the database
+
 class Movie(db.Model):
     """
     Represents a movie in the database.
@@ -30,147 +28,148 @@ class Movie(db.Model):
     director = db.Column(db.String)
     year = db.Column(db.Integer)
     rating = db.Column(db.Float)
-    user_id = db.Column(db.Integer)
-    cover_image =  db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    cover_image = db.Column(db.String)
+
+    # Define a relationship between Movie and User
+    user = db.relationship("User", backref=db.backref("movies", lazy=True))
+
+    def __repr__(self):
+        return f"<Movie {self.name}>"
 
 
-# SQLite-based data manager that implements DataManagerInterface
-class SQLiteDataManager(DataManagerInterface):
+class SQLiteDataManager:
     """
-    A data manager class that handles SQLite database interactions
-    for users and movies.
+    Data manager to handle database operations.
     """
 
-    def __init__(self, db_file_name):
-        """
-        Initialize the SQLiteDataManager with a SQLite database file.
+    def __init__(self, db_path):
+        self.db_path = db_path
 
-        Args:
-            db_file_name (str): The name of the SQLite database file.
-        """
-        self.engine = create_engine(f"sqlite:///{db_file_name}")
-        self.Session = sessionmaker(bind=self.engine)
-        db.metadata.create_all(self.engine)
-
-    # Retrieves all users from the database
     def get_all_users(self):
         """
-        Retrieve all users from the database.
+        Retrieves all users from the database.
 
         Returns:
-            list: A list of User objects.
+            List of all users.
         """
-        session = self.Session()
-        stmt = select(User)
-        result = session.execute(stmt).scalars().all()
-        session.close()
-        return result
+        try:
+            return User.query.all()
+        except Exception as e:
+            print(f"Error retrieving users: {e}")
+            return []
 
-    # Retrieves all movies for a given user from the database
     def get_user_movies(self, user_id):
         """
-        Retrieve all movies associated with a specific user.
+        Retrieves movies for a specific user.
 
         Args:
-            user_id (int): The ID of the user.
+            user_id (int): The ID of the user whose movies are to be retrieved.
 
         Returns:
-            list: A list of Movie objects associated with the given user.
+            List of movies for the specified user.
         """
-        session = self.Session()
-        stmt = select(Movie).where(Movie.user_id == user_id)
-        result = session.execute(stmt).scalars().all()
-        session.close()
-        return result
+        try:
+            user = User.query.get(user_id)
+            if user:
+                return user.movies  # Access the related movies via the relationship
+            else:
+                return []
+        except Exception as e:
+            print(f"Error retrieving movies for user {user_id}: {e}")
+            return []
 
-    # Adds a new user to the database
     def add_user(self, user_id, name):
         """
-        Add a new user to the database.
+        Adds a new user to the database.
 
         Args:
-            user_id (str): The unique ID of the user.
-            name (str): The name of the user.
+            user_id (int): The ID of the new user.
+            name (str): The name of the new user.
 
         Returns:
-            None
+            The new user object or None in case of failure.
         """
-        session = self.Session()
-        new_user = User(id=user_id, name=name)
-        session.add(new_user)
-        session.commit()
-        session.close()
+        try:
+            new_user = User(id=user_id, name=name)
+            db.session.add(new_user)
+            db.session.commit()
+            return new_user
+        except Exception as e:
+            print(f"Error adding user {name}: {e}")
+            return None
 
-    # Adds a new movie to the database
-    def add_movie(self, movie_id, name):
+    def add_movie(self, name, director, year, rating, user_id, cover_image):
         """
-        Add a new movie to the database.
+        Adds a new movie to the database for a specific user.
 
         Args:
-            movie_id (int): The unique ID of the movie.
             name (str): The name of the movie.
+            director (str): The director of the movie.
+            year (int): The year the movie was released.
+            rating (float): The rating of the movie.
+            user_id (int): The ID of the user who owns the movie.
+            cover_image (str): The URL of the movie's cover image.
 
         Returns:
-            None
+            The new movie object or None in case of failure.
         """
-        session = self.Session()
-        new_movie = Movie(id=movie_id, name=name)
-        session.add(new_movie)
-        session.commit()
-        session.close()
+        try:
+            new_movie = Movie(
+                name=name,
+                director=director,
+                year=year,
+                rating=rating,
+                user_id=user_id,
+                cover_image=cover_image,
+            )
+            db.session.add(new_movie)
+            db.session.commit()
+            return new_movie
+        except Exception as e:
+            print(f"Error adding movie {name}: {e}")
+            return None
 
-    # Updates details of a movie in the database
-    def update_movie(self, movie_id, name=None, director=None, year=None, rating=None):
-        """
-        Update details of an existing movie in the database.
-
-        Args:
-            movie_id (int): The ID of the movie to be updated.
-            name (str, optional): The new name of the movie.
-            director (str, optional): The new director of the movie.
-            year (int, optional): The new release year of the movie.
-            rating (float, optional): The new rating of the movie.
-
-        Returns:
-            None
-        """
-        session = self.Session()
-        movie = session.query(Movie).filter(Movie.id == movie_id).one_or_none()
-
-        if movie:
-            if name is not None:
-                movie.name = name
-            if director is not None:
-                movie.director = director
-            if year is not None:
-                movie.year = year
-            if rating is not None:
-                movie.rating = rating
-
-            session.commit()
-        else:
-            print("Movie not found.")
-
-        session.close()
-
-    # Deletes a movie from the database
     def delete_movie(self, movie_id):
         """
-        Delete a movie from the database.
+        Deletes a movie from the database.
 
         Args:
             movie_id (int): The ID of the movie to be deleted.
 
         Returns:
-            None
+            True if deletion was successful, False otherwise.
         """
-        session = self.Session()
-        movie = session.query(Movie).filter(Movie.id == movie_id).first()
+        try:
+            movie = Movie.query.get(movie_id)
+            if movie:
+                db.session.delete(movie)
+                db.session.commit()
+                return True
+            return False
+        except Exception as e:
+            print(f"Error deleting movie {movie_id}: {e}")
+            return False
 
-        if movie:
-            session.delete(movie)
-            session.commit()
-        else:
-            print("Movie not found.")
+    def delete_user(self, user_id):
+        """
+        Deletes a user from the database.
 
-        session.close()
+        Args:
+            user_id (int): The ID of the user to be deleted.
+
+        Returns:
+            True if deletion was successful, False otherwise.
+        """
+        try:
+            user = User.query.get(user_id)
+            if user:
+                db.session.delete(user)
+                db.session.commit()
+                return True
+            return False
+        except Exception as e:
+            print(f"Error deleting user {user_id}: {e}")
+            return False
+
+
